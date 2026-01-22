@@ -76,3 +76,57 @@ Get-MgGroup -All
 
 # View a group's details
 Get-MgGroup -GroupId "<group-id>"
+
+# Get sign-in logs for a user
+Get-MgAuditLogSignIn -Filter "userPrincipalName eq '<user@domain.com>'"
+
+# Get sign-in logs for failed sign-ins
+Get-MgAuditLogSignIn -Filter "status/errorCode ne 0"
+
+# Get sign-in logs for a specific application
+Get-MgAuditLogSignIn -Filter "appDisplayName eq 'My Application'"
+
+# Get risky sign-ins
+Get-MgAuditLogSignIn -Filter "riskDetail ne 'none'"
+
+# Get sign-ins from a specific location
+Get-MgAuditLogSignIn -Filter "location/city eq 'New York'"
+
+# Get sign-in logs within a specific date range
+$startDate = (Get-Date).AddDays(-7).ToString("o")   
+$endDate = (Get-Date).ToString("o")
+Get-MgAuditLogSignIn -Filter "createdDateTime ge $startDate and createdDateTime le $endDate"
+
+# Get audit logs for a specific application
+Get-MgAuditLogDirectoryAudit -Filter "targetResources/any(tr: trd eq 'My Application')"
+
+# Get audit logs for a user management activities
+Get-MgAuditLogDirectoryAudit -Filter "targetResources/any(tr: tre eq '<user@domain.com>')"
+
+# Get all sign-in logs
+Get-MgAuditLogSignIn -All
+
+# Get audit logs for user management activities
+Get-MgAuditLogDirectoryAudit -Filter "activityDisplayName eq 'Add user' or activityDisplayName eq 'Update user' or activityDisplayName eq 'Delete user'" -All
+
+# Get all audit logs
+Get-MgAuditLogDirectoryAudit -All
+
+# Get statistics on sign-in activities
+Get-MgReportRootSignInActivity -Period "D7"
+
+# Get statistics on user activities
+Get-MgReportRootUserActivity -Period "D7"
+
+# Get statistics on application usage
+Get-MgReportRootAppUsage -Period "D7"
+
+# Third-party application management    
+# List all enterprise applications
+Get-MgServicePrincipal -All 
+
+# View details of a specific enterprise application
+Get-MgServicePrincipal -ServicePrincipalId "<application-id>"
+
+# Assign a user to an enterprise application
+New-MgServicePrincipalAppRoleAssignment -ServicePrincipalId "<application-id>" -PrincipalId "<user-id>" -AppRoleId "<app-role-id>"
