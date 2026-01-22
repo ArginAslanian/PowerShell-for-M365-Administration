@@ -13,6 +13,9 @@ Get-MgUser -All
 # View a user's details
 Get-MgUser -UserId "<user@domain.com>"
 
+# View a user's object ID
+(Get-MgUser -UserId "<user@domain.com>").Id
+
 # Update a user's display name
 Update-MgUser -UserId "<user@domain.com>" -DisplayName "Updated Display Name"
 
