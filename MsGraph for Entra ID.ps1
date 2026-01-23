@@ -130,3 +130,18 @@ Get-MgServicePrincipal -ServicePrincipalId "<application-id>"
 
 # Assign a user to an enterprise application
 New-MgServicePrincipalAppRoleAssignment -ServicePrincipalId "<application-id>" -PrincipalId "<user-id>" -AppRoleId "<app-role-id>"
+
+#######################################################
+# User Devices
+
+# List all devices registered to a user
+Get-MgUserRegisteredDevice -UserId "<user@domain.com>"
+
+# View details of a specific device
+Get-MgDevice -DeviceId "<device-id>"
+
+# List all devices a user has used to sign in
+Get-MgUserAuthenticationMethodDevice -UserId "<user@domain.com>"
+
+# List what device a user is currently using
+Get-MgUserAuthenticationMethodDevice -UserId "<user@domain.com>" | Where-Object { $_.IsCurrentDevice -eq $true }

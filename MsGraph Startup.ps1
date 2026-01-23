@@ -4,6 +4,9 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 # Install MsGraph PowerShell SDK
 Install-Module Microsoft.Graph -Repository PSGallery -Scope CurrentUser -Force
 
+# If the installation errors because of previous versions, uninstall them first
+Get-InstalledModule Microsoft.Graph* | Uninstall-Module -AllVersions -Force; Install-Module Microsoft.Graph -Scope CurrentUser -Force -AllowClobber
+
 # Verify Installation
 Get-InstalledModule Microsoft.Graph
 
