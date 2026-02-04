@@ -56,6 +56,10 @@ Get-MgGroupMember -GroupId $group.Id -All
 # Add a member to a distribution group
 Add-MgGroupMember -GroupId "<group-id>" -DirectoryObjectId "<user-id>"
 
+# Add a member to a distribution group by user email address
+$user = Get-MgUser -Filter "mail eq 'user@domain.com'"
+Add-MgGroupMember -GroupId "<group-id>" -DirectoryObjectId $user.Id
+
 # Remove a member from a distribution group
 Remove-MgGroupMember -GroupId "<group-id>" -DirectoryObjectId "<user-id>"
 
