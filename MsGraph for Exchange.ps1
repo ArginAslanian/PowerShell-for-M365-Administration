@@ -43,8 +43,15 @@ Get-MgUserCalendarPermission -UserId "<user-id>" -CalendarId "calendar" | Select
 # View distribution groups
 Get-MgGroup -Filter "groupTypes/any(c:c eq 'Unified')" -All
 
+# Get the object ID of a distribution group
+Get-MgGroup -Filter "displayName eq 'Group Name'"
+
 # View members of a distribution group
 Get-MgGroupMember -GroupId "<group-id>" -All
+
+# View members of a distribution group by distribution list email address
+$group = Get-MgGroup -Filter "mail eq 'group@domain.com'"
+Get-MgGroupMember -GroupId $group.Id -All
 
 # Add a member to a distribution group
 Add-MgGroupMember -GroupId "<group-id>" -DirectoryObjectId "<user-id>"

@@ -21,6 +21,12 @@ Get-Mailbox -ResultSize Unlimited
 #Get list of all distribution groups
 Get-DistributionGroup -ResultSize Unlimited
 
+# Get list of all members of a specific distribution group
+Get-DistributionGroupMember -Identity "Group Name"
+
+# Add a member to a specific distribution group
+Add-DistributionGroupMember -Identity "Group Name" -Member "user@domain.com"
+
 #Get list of all mail contacts
 Get-MailContact -ResultSize Unlimited
 
