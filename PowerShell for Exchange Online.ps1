@@ -20,6 +20,9 @@ Disconnect-ExchangeOnline
 ###### Mailbox Operations
 ################################################################
 
+# Mailbox permissions:
+# FullAccess, ReadPermission, ChangePermission
+
 # List mailbox permissions for a specific mailbox
 Get-MailboxPermission -Identity "mailbox_email"
 
@@ -37,6 +40,12 @@ Add-RecipientPermission -Identity "mailbox_email" -Trustee "user_email" -AccessR
 
 # Grant send-on-behalf permission to a user for a specific mailbox
 Set-Mailbox -Identity "mailbox_email" -GrantSendOnBehalfTo "user_email"
+
+# Difference between send-as and send-on-behalf:
+# Send-as allows a user to send an email as if they were the mailbox owner, without any indication that the email was sent by someone else. 
+# The recipient will see the email as coming directly from the mailbox owner.
+# Send-on-behalf allows a user to send an email on behalf of the mailbox owner. 
+# The recipient will see the email as coming from the mailbox owner, but it will indicate that it was sent by the delegate user (e.g., "Sent on behalf of mailbox_owner_email by user_email").
 
 # Remove mailbox permissions for a specific mailbox
 Remove-MailboxPermission -Identity "mailbox_email" -User "user_email" -AccessRights FullAccess
@@ -75,11 +84,14 @@ Get-Mailbox -RecipientTypeDetails SharedMailbox -ResultSize Unlimited
 ###### Calendar Operations
 ################################################################
 
+# Permissions for calendar: 
+# Editor, Reviewer, LimitedDetails, AvailabilityOnly, None
+
 # List calendar permissions for a specific calendar
 Get-MailboxFolderPermission -Identity xyz@abc.com:\Calendar
 
-# Share a calendar from one user to another with specific permissions
-Add-MailboxFolderPermission -Identity "calendar_owner_email:\Calendar" -User "calendar_user_email" -AccessRights FullAccess
+# Share a calendar from one user to another with editor permissions
+Add-MailboxFolderPermission -Identity "calendar_owner_email:\Calendar" -User "calendar_user_email" -AccessRights Editor
 
 # Share a calendar from one user to another with reviewer permissions
 Add-MailboxFolderPermission -Identity "calendar_owner_email:\Calendar" -User "calendar_user_email" -AccessRights Reviewer
@@ -88,10 +100,10 @@ Add-MailboxFolderPermission -Identity "calendar_owner_email:\Calendar" -User "ca
 Add-MailboxFolderPermission -Identity "calendar_owner_email:\Calendar" -User "calendar_user_email" -AccessRights LimitedDetails
 
 # Remove calendar permissions for a specific calendar
-Remove-MailboxFolderPermission -Identity "calendar_owner_email:\Calendar" -User "calendar_user_email" -AccessRights FullAccess
+Remove-MailboxFolderPermission -Identity "calendar_owner_email:\Calendar" -User "calendar_user_email" -AccessRights Editor
 
 # Edit calendar permissions for a specific calendar
-Set-MailboxFolderPermission -Identity "calendar_owner_email:\Calendar" -User "calendar_user_email" -AccessRights ReadPermissions
+Set-MailboxFolderPermission -Identity "calendar_owner_email:\Calendar" -User "calendar_user_email" -AccessRights Reviewer
 
 ################################################################
 ###### Distribution Group Operations
@@ -124,9 +136,6 @@ Get-Mailbox -Filter {LitigationHoldEnabled -eq $true} -ResultSize Unlimited
 
 # Enable litigation hold for a specific mailbox
 Set-Mailbox -Identity "<mailbox_email>" -LitigationHoldEnabled $true -LitigationHoldDuration 365
-
-# Set automatic replies for a specific mailbox
-Set-MailboxAutoReplyConfiguration -Identity "<mailbox_email>" -AutoReplyState Enabled -InternalMessage "I am currently out of the office." -ExternalMessage "I am currently out of the office." 
 
 # Enable mailbox auditing for a specific mailbox
 Set-Mailbox -Identity "<mailbox_email>" -AuditEnabled $true
