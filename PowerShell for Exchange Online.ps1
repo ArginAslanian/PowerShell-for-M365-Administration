@@ -88,7 +88,10 @@ Get-Mailbox -RecipientTypeDetails SharedMailbox -ResultSize Unlimited
 # Editor, Reviewer, LimitedDetails, AvailabilityOnly, None
 
 # List calendar permissions for a specific calendar
-Get-MailboxFolderPermission -Identity xyz@abc.com:\Calendar
+Get-MailboxFolderPermission -Identity "calendar_owner_email:\Calendar"
+
+# List send-on-behalf permissions for a specific mailbox
+Get-Mailbox "calendar_owner_email" | Select-Object Name,GrantSendOnBehalfTo
 
 # Share a calendar from one user to another with editor permissions
 Add-MailboxFolderPermission -Identity "calendar_owner_email:\Calendar" -User "calendar_user_email" -AccessRights Editor
@@ -98,6 +101,15 @@ Add-MailboxFolderPermission -Identity "calendar_owner_email:\Calendar" -User "ca
 
 # Share a calendar from one user to another with limited permissions
 Add-MailboxFolderPermission -Identity "calendar_owner_email:\Calendar" -User "calendar_user_email" -AccessRights LimitedDetails
+
+# Share a calendar from one user to another with availability only permissions
+Add-MailboxFolderPermission -Identity "calendar_owner_email:\Calendar" -User "calendar_user_email" -AccessRights AvailabilityOnly
+
+# Share a calendar from one user to another with delegate permissions
+Add-MailboxFolderPermission -Identity "calendar_owner_email:\Calendar" -User "calendar_user_email" -AccessRights Editor -SharingPermissionFlags Delegate
+
+# Edit calendar permissions for a specific calendar to delegate permissions
+Set-MailboxFolderPermission -Identity "calendar_owner_email:\Calendar" -User "calendar_user_email" -AccessRights Editor -SharingPermissionFlags Delegate
 
 # Remove calendar permissions for a specific calendar
 Remove-MailboxFolderPermission -Identity "calendar_owner_email:\Calendar" -User "calendar_user_email" -AccessRights Editor
